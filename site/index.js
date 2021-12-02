@@ -7,9 +7,7 @@ import("./node_modules/photon-wasm/photon_wasm.js").then((photon) => {
         var myImage = document.getElementById("myImage");
 
 
-        // Draw the image element onto the canvas
-        ctx.drawImage(myImage, 0, 0, myImage.width, myImage.height,
-            0, 0, canvas.width, canvas.height)
+        scaleToFit(myImage, ctx);
 
         // Convert the ImageData found in the canvas to a PhotonImage (so that it can communicate with the core Rust library)
         let rust_image = photon.open_image(canvas, ctx);
@@ -22,4 +20,13 @@ import("./node_modules/photon-wasm/photon_wasm.js").then((photon) => {
     }
 
     filterImage()
+
+    function scaleToFit(img, ctx){
+        // get the scale
+        var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+        // get the top left position of the image
+        var x = (canvas.width / 2) - (img.width / 2) * scale;
+        var y = (canvas.height / 2) - (img.height / 2) * scale;
+        ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+    }
 });
