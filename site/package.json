@@ -3,7 +3,8 @@
         "serve": "webpack-dev-server"
     },
     "dependencies": {
-        "photon-wasm": "^0.1.0"
+        "photon-wasm": "../pkg",
+        "tailwindcss": "^2.2.16"
     },
     "devDependencies": {
         "webpack": "^4.25.1",
