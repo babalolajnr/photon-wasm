@@ -14,7 +14,6 @@ import("./node_modules/photon-wasm/photon_wasm.js").then((photon) => {
         let ctx = canvas.getContext("2d");
         let myImage = document.getElementById("myImage");
 
-
         scaleToFit(myImage, ctx);
 
         // Convert the ImageData found in the canvas to a PhotonImage (so that it can communicate with the core Rust library)
