@@ -6,15 +6,15 @@ import("./node_modules/photon-wasm/photon_wasm.js").then((photon) => {
     imageInput.onchange = e => {
         const [image] = imageInput.files
         if (image) sourceImage.src = URL.createObjectURL(image)
+        filterImage()
     }
 
     function filterImage() {
         // Create a canvas and get a 2D context from the canvas
         let canvas = document.getElementById("canvas");
         let ctx = canvas.getContext("2d");
-        let myImage = document.getElementById("myImage");
 
-        scaleToFit(myImage, ctx);
+        scaleToFit(sourceImage, ctx);
 
         // Convert the ImageData found in the canvas to a PhotonImage (so that it can communicate with the core Rust library)
         let rust_image = photon.open_image(canvas, ctx);
