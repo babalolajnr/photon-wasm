@@ -12,8 +12,6 @@ import("./node_modules/photon-wasm/photon_wasm.js").then((photon) => {
             image.onload = () => {
                 ctx.fillStyle = "white"
                 ctx.fillRect(0, 0, canvas.width, canvas.height)
-                // canvas.width = image.width
-                // canvas.height = image.height
                 filterImage(image)
             }
             image.src = sourceImage.src = e.target.result
