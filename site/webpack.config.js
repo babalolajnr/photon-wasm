@@ -7,7 +7,7 @@ module.exports = {
     },
     devServer: {
         static: {
-            directory: path.join(__dirname, "./")
+            directory: path.resolve(__dirname, "./")
         }
     },
     mode: "development",
