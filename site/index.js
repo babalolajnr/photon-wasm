@@ -26,7 +26,7 @@ import("./node_modules/photon-wasm/photon_wasm.js").then((photon) => {
     }
 
     function filterImage(image) {
-        // Create a canvas and get a 2D context from the canvas
+        
         scaleToFit(image, finalImageCtx, finalImage)
 
         // Convert the ImageData found in the canvas to a PhotonImage (so that it can communicate with the core Rust library)
