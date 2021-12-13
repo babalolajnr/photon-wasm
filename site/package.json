@@ -1,6 +1,7 @@
 {
     "scripts": {
-        "serve": "webpack serve"
+        "serve": "webpack serve",
+        "build": "webpack   "
     },
     "dependencies": {
         "photon-wasm": "../pkg"
