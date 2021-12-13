@@ -1,39 +1,45 @@
 import("./node_modules/photon-wasm/photon_wasm.js").then((photon) => {
 
     const imageInput = document.getElementById('image-input')
-    const canvas = document.getElementById("canvas")
-    const sourceImage = document.getElementById('src-image')
-    const ctx = canvas.getContext("2d")
+    const finalImage = document.getElementById("final-image")
+    const finalImageCtx = finalImage.getContext("2d")
+    const srcImage = document.getElementById("src-image")
+    const srcImageCtx = srcImage.getContext("2d")
+
 
     imageInput.onchange = e => {
         const reader = new FileReader()
         reader.onload = e => {
             const image = new Image()
             image.onload = () => {
-                ctx.fillStyle = "white"
-                ctx.fillRect(0, 0, canvas.width, canvas.height)
+                // paint white over the canvas to cover previous image
+                finalImageCtx.fillStyle = "white"
+                finalImageCtx.fillRect(0, 0, finalImage.width, finalImage.height)
                 filterImage(image)
+
+                // paint the src image onto the canvas
+                scaleToFit(image, srcImageCtx, srcImage)
             }
-            image.src = sourceImage.src = e.target.result
+            image.src = e.target.result
         }
         reader.readAsDataURL(e.target.files[0]);
     }
 
     function filterImage(image) {
         // Create a canvas and get a 2D context from the canvas
-        scaleToFit(image, ctx)
+        scaleToFit(image, finalImageCtx, finalImage)
 
         // Convert the ImageData found in the canvas to a PhotonImage (so that it can communicate with the core Rust library)
-        let rust_image = photon.open_image(canvas, ctx)
+        let rust_image = photon.open_image(finalImage, finalImageCtx)
 
         // Filter the image, the PhotonImage's raw pixels are modified
         photon.filter(rust_image, "radio")
 
         // Place the PhotonImage back on the canvas
-        photon.putImageData(canvas, ctx, rust_image)
+        photon.putImageData(finalImage, finalImageCtx, rust_image)
     }
 
-    function scaleToFit(img, ctx) {
+    function scaleToFit(img, ctx, canvas) {
         // get the scale
         let scale = Math.min(canvas.width / img.width, canvas.height / img.height)
         // get the top left position of the image
