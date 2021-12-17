@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack')
 
 module.exports = {
     entry: "./src/index.js",
@@ -18,7 +19,13 @@ module.exports = {
     experiments: {
         asyncWebAssembly: true
     },
-    plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
+    plugins: [
+        new HtmlWebpackPlugin({ template: './src/index.html' }),
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
+            Buffer: ['buffer', 'Buffer']
+        }),
+    ],
     module: {
         rules: [
             {
@@ -38,4 +45,18 @@ module.exports = {
             },
         ],
     },
-};
+    resolve: {
+        fallback: {
+            os: require.resolve("os-browserify/browser"),
+            path: require.resolve("path-browserify"),
+            fs: false,
+            child_process: false,
+            util: require.resolve("util/"),
+            zlib: require.resolve("browserify-zlib"),
+            stream: require.resolve("stream-browserify"),
+            assert: require.resolve("assert/"),
+            https: require.resolve("https-browserify"),
+            http: require.resolve("stream-http")
+        }
+    },
+}
