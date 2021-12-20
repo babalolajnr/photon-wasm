@@ -2,49 +2,47 @@ import './styles.css'
 import Jimp from 'jimp'
 
 
-const finalImage = document.getElementById("final-image")
-const finalImageCtx = finalImage.getContext("2d")
+const wasmResult = document.getElementById("wasm-result")
+const ctx = wasmResult.getContext('2d')
 const srcImage = document.getElementById("src-image")
-const srcImageCtx = srcImage.getContext("2d")
 const imageInput = document.getElementById('image-input')
-const jimpImage = document.getElementById("jimp-image")
+const jsResult = document.getElementById("js-result")
 
+let photonBlur
 
-imageInput.onchange = e => {
-    const reader = new FileReader()
-    reader.onload = e => {
+import('photon-wasm').then((photon) => {
+    photonBlur = function () {
         const image = new Image()
-
         image.onload = () => {
-            // paint white over the canvas to cover previous image
-            finalImageCtx.fillStyle = "white"
-            finalImageCtx.fillRect(0, 0, finalImage.width, finalImage.height)
-
-            const jimage = Jimp.read(image.src)
-
-            jimage.then((result) => {
-                result.blur(20)
-
-                console.log(result)
-
-                result.getBase64Async(Jimp.MIME_JPEG).then((base64string) => {
-                    console.log(base64string)
-                    jimpImage.src = base64string
-                    finalImageCtx.drawImage(jimpImage, 0, 0)
-                })
-            }
-            )
-
-            // paint the src image onto the canvas
-            scaleToFit(image, srcImageCtx, srcImage)
+            scaleToFit(srcImage, ctx, wasmResult)
+            const photonImage = photon.open_image(wasmResult, ctx)
+            photon.gaussian_blur(photonImage, 10)
+            photon.putImageData(wasmResult, ctx, photonImage)
         }
-        image.src = e.target.result
+        image.src = srcImage.src
+        console.log(photon)
     }
-    reader.readAsDataURL(e.target.files[0]);
+})
+
+const loadImage = function () {
+    const url = URL.createObjectURL(this.files[0])
+    srcImage.src = url
+    srcImage.onload = blur(url)
 }
 
+const blur = function (image) {
+    Jimp.read(image).then((result) => {
+        result.blur(20)
+        result.getBase64Async(Jimp.MIME_JPEG).then((base64string) => {
+            jsResult.src = base64string
+        })
+    })
+    photonBlur()
+}
 
-function scaleToFit(img, ctx, canvas) {
+imageInput.onchange = loadImage
+
+const scaleToFit = function (img, ctx, canvas) {
     // get the scale
     let scale = Math.min(canvas.width / img.width, canvas.height / img.height)
     // get the top left position of the image
@@ -52,56 +50,3 @@ function scaleToFit(img, ctx, canvas) {
     let y = (canvas.height / 2) - (img.height / 2) * scale
     ctx.drawImage(img, x, y, img.width * scale, img.height * scale)
 }
-
-
-// import("../node_modules/photon-wasm/photon_wasm.js").then((photon) => {
-
-//     const imageInput = document.getElementById('image-input')
-//     const finalImage = document.getElementById("final-image")
-//     const finalImageCtx = finalImage.getContext("2d")
-//     const srcImage = document.getElementById("src-image")
-//     const srcImageCtx = srcImage.getContext("2d")
-
-
-//     imageInput.onchange = e => {
-//         const reader = new FileReader()
-//         reader.onload = e => {
-//             const image = new Image()
-//             image.onload = () => {
-//                 // paint white over the canvas to cover previous image
-//                 finalImageCtx.fillStyle = "white"
-//                 finalImageCtx.fillRect(0, 0, finalImage.width, finalImage.height)
-//                 filterImage(image)
-
-//                 // paint the src image onto the canvas
-//                 scaleToFit(image, srcImageCtx, srcImage)
-//             }
-//             image.src = e.target.result
-//         }
-//         reader.readAsDataURL(e.target.files[0]);
-//     }
-
-//     function filterImage(image) {
-
-//         scaleToFit(image, finalImageCtx, finalImage)
-
-//         // Convert the ImageData found in the canvas to a PhotonImage (so that it can communicate with the core Rust library)
-//         let rust_image = photon.open_image(finalImage, finalImageCtx)
-
-//         // Filter the image, the PhotonImage's raw pixels are modified
-//         photon.filter(rust_image, "radio")
-
-//         // Place the PhotonImage back on the canvas
-//         photon.putImageData(finalImage, finalImageCtx, rust_image)
-//     }
-
-//     function scaleToFit(img, ctx, canvas) {
-//         // get the scale
-//         let scale = Math.min(canvas.width / img.width, canvas.height / img.height)
-//         // get the top left position of the image
-//         let x = (canvas.width / 2) - (img.width / 2) * scale
-//         let y = (canvas.height / 2) - (img.height / 2) * scale
-//         ctx.drawImage(img, x, y, img.width * scale, img.height * scale)
-//     }
-// })
-
