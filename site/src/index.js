@@ -16,11 +16,10 @@ import('photon-wasm').then((photon) => {
         image.onload = () => {
             scaleToFit(srcImage, ctx, wasmResult)
             const photonImage = photon.open_image(wasmResult, ctx)
-            photon.gaussian_blur(photonImage, 10)
+            photon.gaussian_blur(photonImage, 1)
             photon.putImageData(wasmResult, ctx, photonImage)
         }
         image.src = srcImage.src
-        console.log(photon)
     }
 })
 
