@@ -16,26 +16,42 @@
         <div class="lg:w-1/6 lg:border-r">
             <div class="lg:flex">
                 <div class="lg:mx-auto">
-                    Functions
+                    <div>
+                        Functions
+                    </div>
                 </div>
             </div>
         </div>
         <div class="lg:w-1/2 lg:border-r lg:flex">
             <div class="lg:mx-auto">
-                Source Image
-                <img id="src-image" class="border-2 border-black">
+                <div class="lg:flex lg:pb-4">
+                    <span class="mx-auto">
+                        Source Image
+                    </span>
+                </div>
+                <div class="lg:mx-4">
+                    <img id="src-image" class="border border-black lg:max-w-lg lg:max-h-lg">
+                </div>
             </div>
         </div>
         <div class="lg:w-1/3 lg:flex">
             <div class="lg:mx-auto">
-                <div>Results</div>
-                <div>
-                    Wasm result
-                    <canvas id="wasm-result" class="border-2 border-black"></canvas>
+                <div class="lg:flex pb-4">
+                    <span class="lg:mx-auto">
+                        Results
+                    </span>
+                </div>
+                <div class="lg:py-4">
+                    <div class="lg:pb-4">
+                        Wasm result
+                    </div> 
+                    <canvas id="wasm-result" class="border border-black lg:max-w-lg"></canvas>
                 </div>
                 <div>
-                    Javascript result
-                    <img alt="" id="js-result" class="border-2 border-black">
+                    <div class="lg:pb-4">
+                        Javascript result
+                    </div> 
+                    <img alt="" id="js-result" class="border border-black lg:max-w-lg">
                 </div>
             </div>
         </div>
