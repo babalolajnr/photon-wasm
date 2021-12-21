@@ -7,18 +7,18 @@
 </head>
 
 <body>
-    <div><input type="file" name="image" id="image-input"></div>
+    <div><input type="file" name="image" accept="image/*" id="image-input"></div>
     <div>
         Source Image
-        <canvas id="src-image" width="500" height="300"></canvas>
+        <img id="src-image" width="500" height="300">
     </div>
     <div>
-        Photon canvas
-        <canvas id="final-image" width="500" height="300"></canvas>
+        Wasm result
+        <canvas id="wasm-result"></canvas>
     </div>
     <div>
-        Jimp Final Image
-        <img src="" alt="" height="300" width="500" id="jimp-image">
+        Javascript result
+        <img alt="" height="300" width="500" id="js-result">
     </div>
 </body>
 
