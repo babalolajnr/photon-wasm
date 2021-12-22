@@ -8,6 +8,10 @@ const srcImage = document.getElementById("src-image")
 const imageInput = document.getElementById('image-input')
 const jsResult = document.getElementById("js-result")
 const srcImagePlaceholder = document.getElementById('src-image-placeholder')
+const wasmResultPlaceholder = document.getElementById('wasm-result-placeholder')
+const jsResultPlaceholder = document.getElementById('js-result-placeholder')
+const jsResultTitle = document.getElementById('js-result-title')
+const wasmResultTitle = document.getElementById('wasm-result-title')
 
 let photonBlur
 
@@ -27,8 +31,21 @@ import('photon-wasm').then((photon) => {
 const loadImage = function () {
     const url = URL.createObjectURL(this.files[0])
     srcImage.src = url
+    jsResult.src = url
+
     srcImagePlaceholder.classList.add('hidden')
     srcImage.classList.remove('hidden')
+
+    jsResultPlaceholder.classList.add('hidden')
+    jsResult.classList.remove('hidden')
+    jsResultTitle.classList.remove('hidden')
+    jsResultTitle.classList.add('flex')
+
+    wasmResultPlaceholder.classList.add('hidden')
+    wasmResult.classList.remove('hidden')
+    wasmResultTitle.classList.remove('hidden')
+    wasmResultTitle.classList.add('flex')
+
     // srcImage.onload = blur(url)
 }
 
