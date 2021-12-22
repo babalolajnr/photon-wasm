@@ -50,37 +50,42 @@
             </div>
         </div>
         <div class="lg:basis-[30%]">
-            <div class="">
-                <div class="lg:flex lg:my-5">
+            <div class="lg:flex lg:my-5">
+                <span class="lg:mx-auto">
+                    Results
+                </span>
+            </div>
+            <div class="lg:py-4">
+                <div class="lg:pb-4 hidden" id="wasm-result-title">
                     <span class="lg:mx-auto">
-                        Results
+                        Wasm result
                     </span>
                 </div>
-                <div class="lg:py-4">
-                    <div class="lg:pb-4 hidden" id="wasm-result-title">
-                        <span class="lg:mx-auto">
-                            Wasm result
-                        </span>
-                    </div>
-                    <div class="lg:h-52 flex lg:mx-auto lg:w-10/12 border border-black rounded-lg shadow-xl">
-                        <span class="mx-auto my-auto font-bold">
-                            Wasm result
-                        </span>
-                    </div>
-                    <canvas id="wasm-result" class="border hidden border-black lg:max-w-lg rounded-lg"></canvas>
+                <div class="lg:h-52 flex lg:mx-auto lg:w-10/12 border border-black rounded-lg shadow-xl"
+                    id="wasm-result-placeholder">
+                    <span class="mx-auto my-auto font-bold">
+                        Wasm result
+                    </span>
                 </div>
-                <div>
-                    <div class="lg:pb-4 hidden" id="js-result-title">
-                        <span class="lg:mx-auto">
-                            Javascript result
-                        </span>
-                    </div>
-                    <div class="lg:h-52 flex lg:mx-auto lg:w-10/12 border border-black rounded-lg shadow-xl">
-                        <span class="mx-auto my-auto font-bold">
-                            Javascript result
-                        </span>
-                    </div>
-                    <img id="js-result" class="border hidden border-black lg:max-w-lg rounded-lg">
+                <div class="lg:flex">
+                    <canvas id="wasm-result"
+                        class="lg:mx-auto border hidden border-black lg:max-w-lg rounded-lg"></canvas>
+                </div>
+            </div>
+            <div>
+                <div class="lg:pb-4 hidden" id="js-result-title">
+                    <span class="lg:mx-auto">
+                        Javascript result
+                    </span>
+                </div>
+                <div class="lg:h-52 flex lg:mx-auto lg:w-10/12 border border-black rounded-lg shadow-xl"
+                    id="js-result-placeholder">
+                    <span class="mx-auto my-auto font-bold">
+                        Javascript result
+                    </span>
+                </div>
+                <div class="lg:flex lg:mx-4">
+                    <img id="js-result" class="lg:mx-auto lg:w-11/12 hidden rounded-lg">
                 </div>
             </div>
         </div>
