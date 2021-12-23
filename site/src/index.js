@@ -51,7 +51,12 @@ function jimpBlur() {
     })
 }
 
+/**
+ * Blurs image and places it on the canvas
+ */
 function photonBlur() {
+
+    resetCanvasImageDimensionReference()
 
     canvasImageDimensionReference.src = srcImageUrl
     canvasImageDimensionReference.onload = () => {
@@ -75,9 +80,24 @@ function photonBlur() {
 
 }
 
+/**
+ * Reset the dimensions of the image reference element so that
+ * the canvas does not get distorted after changing the reference
+ * image
+ */
+function resetCanvasImageDimensionReference() {
+    canvasImageDimensionReference.src = ''
+    canvasImageDimensionReference.classList.remove('hidden')
+}
+
 imageInput.onchange = loadImage
 
-
+/**
+ * Scale image to fill canvas
+ * @param  {HTMLImageElement} img
+ * @param  {CanvasRenderingContext2D} ctx
+ * @param  {HTMLCanvasElement} canvas
+ */
 const scaleToFill = function (img, ctx, canvas) {
     // get the scale
     var scale = Math.max(canvas.width / img.width, canvas.height / img.height);
