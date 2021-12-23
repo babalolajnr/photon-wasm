@@ -1,5 +1,6 @@
 import './styles.css'
 import Jimp from 'jimp'
+import * as photon from 'photon-wasm'
 
 
 const wasmResult = document.getElementById("wasm-result")
@@ -13,67 +14,65 @@ const jsResultPlaceholder = document.getElementById('js-result-placeholder')
 const jsResultTitle = document.getElementById('js-result-title')
 const wasmResultTitle = document.getElementById('wasm-result-title')
 
-let photonBlur
+let srcImageUrl;
 
-import('photon-wasm').then((photon) => {
-    photonBlur = function () {
-        const image = new Image()
-        image.onload = () => {
-            scaleToFit(srcImage, ctx, wasmResult)
-            const photonImage = photon.open_image(wasmResult, ctx)
-            photon.gaussian_blur(photonImage, 1)
-            photon.putImageData(wasmResult, ctx, photonImage)
-        }
-        image.src = srcImage.src
-    }
-})
+// functions
+const blurButton = document.getElementById('blur')
+
+blurButton.onclick = () => blur()
 
 const loadImage = function () {
-    const url = URL.createObjectURL(this.files[0])
-    srcImage.src = url
-    jsResult.src = url
+    srcImageUrl = URL.createObjectURL(this.files[0])
+    srcImage.src = srcImageUrl
+    jsResult.src = srcImageUrl
 
     srcImagePlaceholder.classList.add('hidden')
     srcImage.classList.remove('hidden')
-
-    jsResultPlaceholder.classList.add('hidden')
-    jsResult.classList.remove('hidden')
-    jsResultTitle.classList.remove('hidden')
-    jsResultTitle.classList.add('flex')
-
-    wasmResultPlaceholder.classList.add('hidden')
-    wasmResult.classList.remove('hidden')
-    wasmResultTitle.classList.remove('hidden')
-    wasmResultTitle.classList.add('flex')
-
-    const image = new Image()
-    image.onload = () => {
-        wasmResult.height = jsResult.height
-        scaleToFill(srcImage, ctx, wasmResult)
-        // const photonImage = photon.open_image(wasmResult, ctx)
-        // photon.gaussian_blur(photonImage, 1)
-        // photon.putImageData(wasmResult, ctx, photonImage)
-    }
-    image.src = srcImage.src
-
-    // srcImage.onload = blur(url)
 }
 
-const blur = function (image) {
-    Jimp.read(image).then((result) => {
+function blur() {
+    photonBlur()
+    jimpBlur()
+}
+
+function jimpBlur() {
+    Jimp.read(srcImageUrl).then((result) => {
         result.blur(20)
         result.getBase64Async(Jimp.MIME_JPEG).then((base64string) => {
+            // hide the placeholder and display image
+            jsResultPlaceholder.classList.add('hidden')
+            jsResult.classList.remove('hidden')
+            jsResultTitle.classList.remove('hidden')
+            jsResultTitle.classList.add('flex')
+
             jsResult.src = base64string
         })
     })
-    photonBlur()
+}
+
+function photonBlur() {
+    const image = new Image()
+    image.onload = () => {
+        wasmResult.height = srcImage.height
+
+        // hide the placeholder and display image
+        wasmResultPlaceholder.classList.add('hidden')
+        wasmResult.classList.remove('hidden')
+        wasmResultTitle.classList.remove('hidden')
+        wasmResultTitle.classList.add('flex')
+
+        scaleToFill(srcImage, ctx, wasmResult)
+        const photonImage = photon.open_image(wasmResult, ctx)
+        photon.gaussian_blur(photonImage, 1)
+        photon.putImageData(wasmResult, ctx, photonImage)
+    }
+    image.src = srcImageUrl
 }
 
 imageInput.onchange = loadImage
 
 
 const scaleToFill = function (img, ctx, canvas) {
-
     // get the scale
     var scale = Math.max(canvas.width / img.width, canvas.height / img.height);
     // get the top left position of the image
