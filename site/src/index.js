@@ -46,6 +46,16 @@ const loadImage = function () {
     wasmResultTitle.classList.remove('hidden')
     wasmResultTitle.classList.add('flex')
 
+    const image = new Image()
+    image.onload = () => {
+        wasmResult.height = jsResult.height
+        scaleToFill(srcImage, ctx, wasmResult)
+        // const photonImage = photon.open_image(wasmResult, ctx)
+        // photon.gaussian_blur(photonImage, 1)
+        // photon.putImageData(wasmResult, ctx, photonImage)
+    }
+    image.src = srcImage.src
+
     // srcImage.onload = blur(url)
 }
 
@@ -61,11 +71,13 @@ const blur = function (image) {
 
 imageInput.onchange = loadImage
 
-const scaleToFit = function (img, ctx, canvas) {
+
+const scaleToFill = function (img, ctx, canvas) {
+
     // get the scale
-    let scale = Math.min(canvas.width / img.width, canvas.height / img.height)
+    var scale = Math.max(canvas.width / img.width, canvas.height / img.height);
     // get the top left position of the image
-    let x = (canvas.width / 2) - (img.width / 2) * scale
-    let y = (canvas.height / 2) - (img.height / 2) * scale
-    ctx.drawImage(img, x, y, img.width * scale, img.height * scale)
+    var x = (canvas.width / 2) - (img.width / 2) * scale;
+    var y = (canvas.height / 2) - (img.height / 2) * scale;
+    ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
 }
