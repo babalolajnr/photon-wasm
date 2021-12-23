@@ -13,6 +13,7 @@ const wasmResultPlaceholder = document.getElementById('wasm-result-placeholder')
 const jsResultPlaceholder = document.getElementById('js-result-placeholder')
 const jsResultTitle = document.getElementById('js-result-title')
 const wasmResultTitle = document.getElementById('wasm-result-title')
+const canvasImageDimensionReference = document.getElementById('canvas-image-dimension-reference')
 
 let srcImageUrl;
 
@@ -51,9 +52,14 @@ function jimpBlur() {
 }
 
 function photonBlur() {
-    const image = new Image()
-    image.onload = () => {
-        wasmResult.height = srcImage.height
+
+    canvasImageDimensionReference.src = srcImageUrl
+    canvasImageDimensionReference.onload = () => {
+
+        // Get image dimensions from the image element to ensure the canvas fits the image
+        wasmResult.height = canvasImageDimensionReference.height
+        canvasImageDimensionReference.classList.add('hidden')
+
 
         // hide the placeholder and display image
         wasmResultPlaceholder.classList.add('hidden')
@@ -66,7 +72,7 @@ function photonBlur() {
         photon.gaussian_blur(photonImage, 1)
         photon.putImageData(wasmResult, ctx, photonImage)
     }
-    image.src = srcImageUrl
+
 }
 
 imageInput.onchange = loadImage
