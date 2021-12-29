@@ -1,8 +1,9 @@
 import './styles.css'
 import Jimp from 'jimp'
 import * as photon from 'photon-wasm'
+import Toastr from 'toastr'
 
-
+Toastr.success('Welcome', 'greeting')
 const wasmResult = document.getElementById("wasm-result")
 const ctx = wasmResult.getContext('2d')
 const srcImage = document.getElementById("src-image")
