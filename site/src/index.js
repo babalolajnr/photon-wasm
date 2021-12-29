@@ -31,31 +31,36 @@ const loadImage = function () {
     srcImage.classList.remove('hidden')
 }
 
-function blur() {
+async function blur() {
+
+    let t0wasm = performance.now()
     photonBlur()
-    jimpBlur()
+    let tfwasm = performance.now() - t0wasm
+    console.log('wasm time: ' + tfwasm)
+
+    let t0js = performance.now()
+    await jimpBlur()
+    let tfjs = performance.now() - t0js
+    console.log('js time: ' + tfjs)
+
 }
 
-function jimpBlur() {
-    Jimp.read(srcImageUrl).then((result) => {
-        result.blur(20)
-        result.getBase64Async(Jimp.MIME_JPEG).then((base64string) => {
-            // hide the placeholder and display image
-            jsResultPlaceholder.classList.add('hidden')
-            jsResult.classList.remove('hidden')
-            jsResultTitle.classList.remove('hidden')
-            jsResultTitle.classList.add('flex')
+async function jimpBlur() {
+    const image = await Jimp.read(srcImageUrl)
+    image.blur(20)
+    jsResult.src = await image.getBase64Async(Jimp.MIME_JPEG)
 
-            jsResult.src = base64string
-        })
-    })
+    // hide the placeholder and display image
+    jsResultPlaceholder.classList.add('hidden')
+    jsResult.classList.remove('hidden')
+    jsResultTitle.classList.remove('hidden')
+    jsResultTitle.classList.add('flex')
 }
 
 /**
  * Blurs image and places it on the canvas
  */
 function photonBlur() {
-
     resetCanvasImageDimensionReference()
 
     canvasImageDimensionReference.src = srcImageUrl
@@ -77,7 +82,6 @@ function photonBlur() {
         photon.gaussian_blur(photonImage, 1)
         photon.putImageData(wasmResult, ctx, photonImage)
     }
-
 }
 
 /**
