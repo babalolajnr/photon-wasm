@@ -3,7 +3,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack')
 
 module.exports = {
-    entry: "./src/index.js",
+    entry: "./src/index.ts",
+    devtool: 'inline-source-map',
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "bundle.js",
@@ -43,6 +44,11 @@ module.exports = {
                 include: path.resolve(__dirname, 'src'),
                 use: ['style-loader', 'css-loader', 'postcss-loader'],
             },
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
         ],
     },
     resolve: {
@@ -57,6 +63,7 @@ module.exports = {
             assert: require.resolve("assert/"),
             https: require.resolve("https-browserify"),
             http: require.resolve("stream-http")
-        }
+        },
+        extensions: ['.tsx', '.ts', '.js'],
     },
 }
