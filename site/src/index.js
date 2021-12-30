@@ -3,7 +3,6 @@ import Jimp from 'jimp'
 import * as photon from 'photon-wasm'
 import Toastr from 'toastr'
 
-Toastr.success('Welcome', 'greeting')
 const wasmResult = document.getElementById("wasm-result")
 const ctx = wasmResult.getContext('2d')
 const srcImage = document.getElementById("src-image")
@@ -38,11 +37,17 @@ async function blur() {
     photonBlur()
     let tfwasm = performance.now() - t0wasm
     console.log('wasm time: ' + tfwasm)
-
+    Toastr.info(`Wasm run time: ${(tfwasm/1000).toFixed(5)} s`, undefined, {
+        "timeOut": "-1"
+    })
+    
     let t0js = performance.now()
     await jimpBlur()
     let tfjs = performance.now() - t0js
     console.log('js time: ' + tfjs)
+    Toastr.info(`Javascript run time: ${(tfjs/1000).toFixed(5)} s`, undefined, {
+        'timeOut': "-1"
+    })
 
 }
 
