@@ -1,6 +1,6 @@
 import Jimp from "jimp";
 
-export class JimpFunctions {
+export default class JimpFunctions {
 
     constructor(
         private imageUrl: string,
