@@ -1,5 +1,5 @@
 import './styles.css'
-import { JimpFunctions } from './jimpFunctions'
+import JimpFunctions from './jimpFunctions'
 import Toastr from 'toastr'
 import PhotonFunctions from './photonFunctions'
 
