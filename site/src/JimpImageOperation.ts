@@ -14,8 +14,23 @@ export default class JimpImageOperation implements ImageOperation {
         const image = await Jimp.read(this.imageUrl)
         image.blur(20)
         this.jsResult.src = await image.getBase64Async(Jimp.MIME_JPEG)
+        
+        this.displayResult()
+    }
 
-        // hide the placeholder and display image
+    async grayscale() {
+        const image = await Jimp.read(this.imageUrl)
+        image.greyscale()
+        this.jsResult.src = await image.getBase64Async(Jimp.MIME_JPEG)
+        
+        this.displayResult()
+    }
+
+    /**
+     * Hide the placeholder and display image
+     */
+    private displayResult(): void {
+
         this.jsResultPlaceholder.classList.add('hidden')
         this.jsResult.classList.remove('hidden')
         this.jsResultTitle.classList.remove('hidden')
