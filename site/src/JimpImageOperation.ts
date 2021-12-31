@@ -1,7 +1,7 @@
 import Jimp from "jimp";
-import Operations from "./operations";
+import ImageOperation from "./ImageOperation";
 
-export default class JimpFunctions implements Operations {
+export default class JimpImageOperation implements ImageOperation {
 
     constructor(
         private imageUrl: string,
