@@ -1,12 +1,13 @@
 import './styles.css'
 import Jimp from 'jimp'
-// import { JimpFunctions } from './jimp'
+import { JimpFunctions } from './jimpFunctions'
 import * as photon from 'photon-wasm'
 import Toastr from 'toastr'
 
+const srcImage = <HTMLImageElement>document.getElementById("src-image")
+
 const wasmResult = <HTMLCanvasElement>document.getElementById("wasm-result")
 const ctx = wasmResult.getContext('2d')
-const srcImage = <HTMLImageElement>document.getElementById("src-image")
 const imageInput = document.getElementById('image-input')
 const jsResult = <HTMLImageElement>document.getElementById("js-result")
 const srcImagePlaceholder = document.getElementById('src-image-placeholder')
@@ -43,9 +44,9 @@ async function blur() {
     })
 
     let t0js = performance.now()
-    await jimpBlur()
-    // let jimpFunctions = new JimpFunctions(srcImageUrl)
-    // jimpFunctions.blur()
+    // await jimpBlur()
+    let jimpFunctions = new JimpFunctions(srcImageUrl, jsResult, jsResultPlaceholder, jsResultTitle)
+    await jimpFunctions.blur()
     let tfjs = performance.now() - t0js
     console.log('js time: ' + tfjs)
     Toastr.info(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`, undefined, {
@@ -54,17 +55,7 @@ async function blur() {
 
 }
 
-async function jimpBlur() {
-    const image = await Jimp.read(srcImageUrl)
-    image.blur(20)
-    jsResult.src = await image.getBase64Async(Jimp.MIME_JPEG)
 
-    // hide the placeholder and display image
-    jsResultPlaceholder.classList.add('hidden')
-    jsResult.classList.remove('hidden')
-    jsResultTitle.classList.remove('hidden')
-    jsResultTitle.classList.add('flex')
-}
 
 /**
  * Blurs image and places it on the canvas
