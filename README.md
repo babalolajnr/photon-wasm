@@ -1,3 +1,3 @@
 # CSC 499 Project
 
-Project to compare WebAssembly performance with Vanilla Javascript
+Project to compare WebAssembly performance with Javascript/Typescript
