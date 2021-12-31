@@ -1,6 +1,7 @@
 import * as photon from 'photon-wasm'
+import Operations from './operations'
 
-export default class PhotonFunctions {
+export default class PhotonFunctions implements Operations {
     private ctx: CanvasRenderingContext2D
 
     constructor(
