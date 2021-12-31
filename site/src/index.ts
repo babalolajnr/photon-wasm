@@ -1,4 +1,5 @@
 import './styles.css'
+
 import JimpImageOperation from './JimpImageOperation'
 import Toastr from 'toastr'
 import PhotonImageOperation from './PhotonImageOperation'
@@ -18,10 +19,12 @@ const jsResultTitle = document.getElementById('js-result-title')
 
 let srcImageUrl: string;
 
-// functions
+// function buttons
 const blurButton = document.getElementById('blur')
+const grayscaleButton = document.getElementById('grayscale')
 
 blurButton.onclick = () => blur()
+grayscaleButton.onclick = () => grayscale()
 
 const loadImage = function () {
     srcImageUrl = URL.createObjectURL(this.files[0])
@@ -44,7 +47,6 @@ async function blur() {
     })
 
     let t0js = performance.now()
-    // await jimpBlur()
     let jimpImageOperation = new JimpImageOperation(srcImageUrl, jsResult, jsResultPlaceholder, jsResultTitle)
     await jimpImageOperation.blur()
     let tfjs = performance.now() - t0js
@@ -53,6 +55,27 @@ async function blur() {
         'timeOut': -1
     })
 
+}
+
+async function grayscale() {
+
+    let t0wasm = performance.now()
+    let photonImageOperation = new PhotonImageOperation(srcImage, srcImageUrl, wasmResult, wasmResultPlaceholder, wasmResultTitle, canvasImageDimensionReference)
+    photonImageOperation.grayscale()
+    let tfwasm = performance.now() - t0wasm
+    console.log('wasm time: ' + tfwasm)
+    Toastr.info(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`, undefined, {
+        "timeOut": -1
+    })
+
+    let t0js = performance.now()
+    let jimpImageOperation = new JimpImageOperation(srcImageUrl, jsResult, jsResultPlaceholder, jsResultTitle)
+    await jimpImageOperation.grayscale()
+    let tfjs = performance.now() - t0js
+    console.log('js time: ' + tfjs)
+    Toastr.info(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`, undefined, {
+        'timeOut': -1
+    })
 }
 
 imageInput.onchange = loadImage
