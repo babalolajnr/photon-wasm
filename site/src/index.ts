@@ -1,7 +1,7 @@
 import './styles.css'
-import JimpFunctions from './jimpFunctions'
+import JimpImageOperation from './JimpImageOperation'
 import Toastr from 'toastr'
-import PhotonFunctions from './photonFunctions'
+import PhotonImageOperation from './PhotonImageOperation'
 
 const srcImage = <HTMLImageElement>document.getElementById("src-image")
 const srcImagePlaceholder = document.getElementById('src-image-placeholder')
@@ -35,8 +35,8 @@ const loadImage = function () {
 async function blur() {
 
     let t0wasm = performance.now()
-    let photonFunctions = new PhotonFunctions(srcImage, srcImageUrl, wasmResult, wasmResultPlaceholder, wasmResultTitle, canvasImageDimensionReference)
-    photonFunctions.blur()
+    let photonImageOperation = new PhotonImageOperation(srcImage, srcImageUrl, wasmResult, wasmResultPlaceholder, wasmResultTitle, canvasImageDimensionReference)
+    photonImageOperation.blur()
     let tfwasm = performance.now() - t0wasm
     console.log('wasm time: ' + tfwasm)
     Toastr.info(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`, undefined, {
@@ -45,8 +45,8 @@ async function blur() {
 
     let t0js = performance.now()
     // await jimpBlur()
-    let jimpFunctions = new JimpFunctions(srcImageUrl, jsResult, jsResultPlaceholder, jsResultTitle)
-    await jimpFunctions.blur()
+    let jimpImageOperation = new JimpImageOperation(srcImageUrl, jsResult, jsResultPlaceholder, jsResultTitle)
+    await jimpImageOperation.blur()
     let tfjs = performance.now() - t0js
     console.log('js time: ' + tfjs)
     Toastr.info(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`, undefined, {
