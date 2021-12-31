@@ -1,8 +1,9 @@
-import * as photon from 'photon-wasm'
+import { gaussian_blur, grayscale, open_image, PhotonImage, putImageData } from 'photon-wasm'
 import ImageOperation from './ImageOperation'
 
 export default class PhotonImageOperation implements ImageOperation {
     private ctx: CanvasRenderingContext2D
+    private photonImage: PhotonImage
 
     constructor(
         private srcImage: HTMLImageElement,
@@ -15,34 +16,39 @@ export default class PhotonImageOperation implements ImageOperation {
         this.ctx = this.wasmResult.getContext('2d')
     }
 
-    blur() {
+    blur(): void {
         this.resetCanvasImageDimensionReference()
 
         this.canvasImageDimensionReference.src = this.imageUrl
         this.canvasImageDimensionReference.onload = () => {
 
-            // Get image dimensions from the image element to ensure the canvas fits the image
-            this.wasmResult.height = this.canvasImageDimensionReference.height
-            this.canvasImageDimensionReference.classList.add('hidden')
+            this.prepareDisplay()
 
+            this.photonImage = open_image(this.wasmResult, this.ctx)
+            gaussian_blur(this.photonImage, 1)
+            putImageData(this.wasmResult, this.ctx, this.photonImage)
+        }
+    }
 
-            // hide the placeholder and display image
-            this.wasmResultPlaceholder.classList.add('hidden')
-            this.wasmResult.classList.remove('hidden')
-            this.wasmResultTitle.classList.remove('hidden')
-            this.wasmResultTitle.classList.add('flex')
+    grayscale(): void {
 
-            this.scaleToFill()
-            const photonImage = photon.open_image(this.wasmResult, this.ctx)
-            photon.gaussian_blur(photonImage, 1)
-            photon.putImageData(this.wasmResult, this.ctx, photonImage)
+        this.resetCanvasImageDimensionReference()
+
+        this.canvasImageDimensionReference.src = this.imageUrl
+        this.canvasImageDimensionReference.onload = () => {
+
+            this.prepareDisplay()
+
+            this.photonImage = open_image(this.wasmResult, this.ctx)
+            grayscale(this.photonImage)
+            putImageData(this.wasmResult, this.ctx, this.photonImage)
         }
     }
 
     /**
      * Scale image to fill canvas
     */
-    private scaleToFill() {
+    private scaleToFill(): void {
         // get the scale
         let scale = Math.max(this.wasmResult.width / this.srcImage.width, this.wasmResult.height / this.srcImage.height);
         // get the top left position of the image
@@ -52,13 +58,32 @@ export default class PhotonImageOperation implements ImageOperation {
     }
 
     /**
- * Reset the dimensions of the image reference element so that
- * the canvas does not get distorted after changing the reference
- * image
- */
-    private resetCanvasImageDimensionReference() {
+    * Reset the dimensions of the image reference element so that
+    * the canvas does not get distorted after changing the reference
+    * image
+    */
+    private resetCanvasImageDimensionReference(): void {
         this.canvasImageDimensionReference.src = ''
         this.canvasImageDimensionReference.classList.remove('hidden')
+    }
+
+    /**
+     * Prepare Canvas to display image 
+     */
+    private prepareDisplay(): void {
+
+        // Get image dimensions from the image element to ensure the canvas fits the image
+        this.wasmResult.height = this.canvasImageDimensionReference.height
+        this.canvasImageDimensionReference.classList.add('hidden')
+
+
+        // hide the placeholder and display image
+        this.wasmResultPlaceholder.classList.add('hidden')
+        this.wasmResult.classList.remove('hidden')
+        this.wasmResultTitle.classList.remove('hidden')
+        this.wasmResultTitle.classList.add('flex')
+
+        this.scaleToFill()
     }
 
 }
