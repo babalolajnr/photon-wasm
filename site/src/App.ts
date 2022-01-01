@@ -31,14 +31,14 @@ export default class App {
         grayscaleButton.onclick = () => this.grayscale()
     }
 
-    private loadImage(): any {
+    private loadImage(): void {
         this.srcImage.src = this.srcImageUrl = URL.createObjectURL(this.imageInput.files[0])
 
         this.srcImagePlaceholder.classList.add('hidden')
         this.srcImage.classList.remove('hidden')
     }
 
-    private async blur() {
+    private async blur(): Promise<void> {
 
         let t0wasm = performance.now()
         this.PhotonImageOperation().blur()
@@ -57,7 +57,7 @@ export default class App {
         this.runTimeDisplay.show(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`)
     }
 
-    private async grayscale() {
+    private async grayscale(): Promise<void> {
         let t0wasm = performance.now()
         this.PhotonImageOperation().grayscale()
         let tfwasm = performance.now() - t0wasm
