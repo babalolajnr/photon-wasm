@@ -1,6 +1,8 @@
 import JimpImageOperation from "./JimpImageOperation"
 import PhotonImageOperation from "./PhotonImageOperation"
 import Toastr from 'toastr'
+import RunTimeLogger from "./RunTimeLogger"
+import ToastrRunTimeLogger from "./ToastrRunTimeLogger"
 
 export default class App {
     private srcImageUrl: string
@@ -15,7 +17,8 @@ export default class App {
         private jsResultPlaceholder: HTMLElement,
         private jsResultTitle: HTMLElement,
         private wasmResultTitle: HTMLElement,
-        private canvasImageDimensionReference: HTMLImageElement
+        private canvasImageDimensionReference: HTMLImageElement,
+        private runTimeDisplay: RunTimeLogger = new ToastrRunTimeLogger
     ) { }
 
 
@@ -31,7 +34,6 @@ export default class App {
 
     private loadImage(): any {
         this.srcImage.src = this.srcImageUrl = URL.createObjectURL(this.imageInput.files[0])
-        // jsResult.src = srcImageUrl
 
         this.srcImagePlaceholder.classList.add('hidden')
         this.srcImage.classList.remove('hidden')
@@ -47,9 +49,9 @@ export default class App {
         photonImageOperation.blur()
         let tfwasm = performance.now() - t0wasm
         console.log('wasm time: ' + tfwasm)
-        Toastr.info(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`, undefined, {
-            "timeOut": -1
-        })
+
+        // Display runtime
+        this.runTimeDisplay.show(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`)    
 
         let t0js = performance.now()
         let jimpImageOperation = new JimpImageOperation(this.srcImageUrl, this.jsResult,
@@ -58,9 +60,8 @@ export default class App {
         await jimpImageOperation.blur()
         let tfjs = performance.now() - t0js
         console.log('js time: ' + tfjs)
-        Toastr.info(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`, undefined, {
-            'timeOut': -1
-        })
+       
+        this.runTimeDisplay.show(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`)
     }
 
     private async grayscale() {
@@ -72,9 +73,8 @@ export default class App {
         photonImageOperation.grayscale()
         let tfwasm = performance.now() - t0wasm
         console.log('wasm time: ' + tfwasm)
-        Toastr.info(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`, undefined, {
-            "timeOut": -1
-        })
+        this.runTimeDisplay.show(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`)    
+
 
         let t0js = performance.now()
         let jimpImageOperation = new JimpImageOperation(this.srcImageUrl, this.jsResult,
@@ -83,8 +83,7 @@ export default class App {
         await jimpImageOperation.grayscale()
         let tfjs = performance.now() - t0js
         console.log('js time: ' + tfjs)
-        Toastr.info(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`, undefined, {
-            'timeOut': -1
-        })
+
+        this.runTimeDisplay.show(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`)
     }
 }
