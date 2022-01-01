@@ -1,4 +1,4 @@
-import { gaussian_blur, grayscale, open_image, PhotonImage, putImageData } from 'photon-wasm'
+import { gaussian_blur, grayscale, invert, open_image, PhotonImage, putImageData } from 'photon-wasm'
 import ImageOperation from './ImageOperation'
 
 export default class PhotonImageOperation implements ImageOperation {
@@ -45,6 +45,19 @@ export default class PhotonImageOperation implements ImageOperation {
         }
     }
 
+    invert(): void {
+        this.resetCanvasImageDimensionReference()
+
+        this.canvasImageDimensionReference.src = this.imageUrl
+        this.canvasImageDimensionReference.onload = () => {
+
+            this.prepareDisplay()
+
+            this.photonImage = open_image(this.wasmResult, this.ctx)
+            invert(this.photonImage)
+            putImageData(this.wasmResult, this.ctx, this.photonImage)
+        }
+    }
     /**
      * Scale image to fill canvas
     */
