@@ -5,6 +5,10 @@ import ToastrRunTimeDisplay from "./ToastrRunTimeDisplay"
 
 export default class App {
     private srcImageUrl: string
+    private operations: any = {
+        blur: () => this.blur(),
+        grayscale: () => this.grayscale(),
+    }
 
     constructor(
         private wasmResult: HTMLCanvasElement,
@@ -17,6 +21,7 @@ export default class App {
         private jsResultTitle: HTMLElement,
         private wasmResultTitle: HTMLElement,
         private canvasImageDimensionReference: HTMLImageElement,
+        private operationsList: HTMLElement,
         private runTimeDisplay: RunTimeDisplay = new ToastrRunTimeDisplay
     ) { }
 
@@ -24,11 +29,7 @@ export default class App {
     run(): void {
         this.imageInput.onchange = () => this.loadImage()
 
-        const blurButton = document.getElementById('blur')
-        const grayscaleButton = document.getElementById('grayscale')
-
-        blurButton.onclick = () => this.blur()
-        grayscaleButton.onclick = () => this.grayscale()
+        this.buildOperationsList()
     }
 
     private loadImage(): void {
@@ -82,5 +83,21 @@ export default class App {
         return new PhotonImageOperation(this.srcImage, this.srcImageUrl,
             this.wasmResult, this.wasmResultPlaceholder, this.wasmResultTitle,
             this.canvasImageDimensionReference)
+    }
+
+    /**
+     * Build Operations list in the UI
+     */
+    private buildOperationsList() {
+        Object.keys(this.operations).forEach(operationName => {
+            let li = document.createElement('li')
+            li.id = operationName
+            li.innerText = operationName.toUpperCase()
+
+            this.operationsList.appendChild(li)
+
+            // add event handler for when operation is clicked
+            li.onclick = () => this.operations[operationName]()
+        })
     }
 }
