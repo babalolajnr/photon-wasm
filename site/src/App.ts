@@ -1,7 +1,7 @@
 import JimpImageOperation from "./JimpImageOperation"
 import PhotonImageOperation from "./PhotonImageOperation"
-import RunTimeLogger from "./RunTimeLogger"
-import ToastrRunTimeLogger from "./ToastrRunTimeLogger"
+import RunTimeDisplay from "./RunTimeDisplay"
+import ToastrRunTimeDisplay from "./ToastrRunTimeDisplay"
 
 export default class App {
     private srcImageUrl: string
@@ -17,7 +17,7 @@ export default class App {
         private jsResultTitle: HTMLElement,
         private wasmResultTitle: HTMLElement,
         private canvasImageDimensionReference: HTMLImageElement,
-        private runTimeDisplay: RunTimeLogger = new ToastrRunTimeLogger
+        private runTimeDisplay: RunTimeDisplay = new ToastrRunTimeDisplay
     ) { }
 
 
@@ -50,7 +50,7 @@ export default class App {
         console.log('wasm time: ' + tfwasm)
 
         // Display runtime
-        this.runTimeDisplay.show(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`)    
+        this.runTimeDisplay.show(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`)
 
         let t0js = performance.now()
         let jimpImageOperation = new JimpImageOperation(this.srcImageUrl, this.jsResult,
@@ -59,7 +59,7 @@ export default class App {
         await jimpImageOperation.blur()
         let tfjs = performance.now() - t0js
         console.log('js time: ' + tfjs)
-       
+
         this.runTimeDisplay.show(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`)
     }
 
@@ -72,7 +72,7 @@ export default class App {
         photonImageOperation.grayscale()
         let tfwasm = performance.now() - t0wasm
         console.log('wasm time: ' + tfwasm)
-        this.runTimeDisplay.show(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`)    
+        this.runTimeDisplay.show(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`)
 
 
         let t0js = performance.now()
