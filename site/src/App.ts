@@ -1,6 +1,5 @@
 import JimpImageOperation from "./JimpImageOperation"
 import PhotonImageOperation from "./PhotonImageOperation"
-import Toastr from 'toastr'
 import RunTimeLogger from "./RunTimeLogger"
 import ToastrRunTimeLogger from "./ToastrRunTimeLogger"
 
