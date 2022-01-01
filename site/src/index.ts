@@ -14,9 +14,12 @@ const jsResult = <HTMLImageElement>document.getElementById("js-result")
 const jsResultPlaceholder = document.getElementById('js-result-placeholder')
 const jsResultTitle = document.getElementById('js-result-title')
 
+const operationsList = document.getElementById('operations-list')
+
 
 new App(wasmResult, srcImage, imageInput, jsResult,
     srcImagePlaceholder, wasmResultPlaceholder,
     jsResultPlaceholder, jsResultTitle,
-    wasmResultTitle, canvasImageDimensionReference).run()
+    wasmResultTitle, canvasImageDimensionReference,
+    operationsList).run()
 
