@@ -127,11 +127,19 @@ export default class App {
             let li = document.createElement('li')
             li.id = operationName
             li.innerText = operationName.toLowerCase()
+            li.classList.add('hover:text-blue-600')
 
             this.operationsList.appendChild(li)
 
             // add event handler for when operation is clicked
-            li.onclick = () => this.operations[operationName]()
+            li.onclick = () => {
+                // if an image has not been chosen
+                if (this.srcImageUrl == undefined)
+                    this.runTimeDisplay.show('You have not selected an image')
+                else
+                    this.operations[operationName]()
+
+            }
         })
     }
 }
