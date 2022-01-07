@@ -14,7 +14,7 @@ export default class JimpImageOperation implements ImageOperation {
         const image = await Jimp.read(this.imageUrl)
         image.blur(20)
         this.jsResult.src = await image.getBase64Async(Jimp.MIME_JPEG)
-        
+
         this.displayResult()
     }
 
@@ -22,7 +22,7 @@ export default class JimpImageOperation implements ImageOperation {
         const image = await Jimp.read(this.imageUrl)
         image.greyscale()
         this.jsResult.src = await image.getBase64Async(Jimp.MIME_JPEG)
-        
+
         this.displayResult()
     }
 
@@ -30,7 +30,15 @@ export default class JimpImageOperation implements ImageOperation {
         const image = await Jimp.read(this.imageUrl)
         image.invert()
         this.jsResult.src = await image.getBase64Async(Jimp.MIME_JPEG)
-        
+
+        this.displayResult()
+    }
+
+    async flipv() {
+        const image = await Jimp.read(this.imageUrl)
+        image.flip(false, true)
+        this.jsResult.src = await image.getBase64Async(Jimp.MIME_JPEG)
+
         this.displayResult()
     }
 
