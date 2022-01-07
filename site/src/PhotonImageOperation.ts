@@ -1,4 +1,4 @@
-import { gaussian_blur, grayscale, invert, open_image, PhotonImage, putImageData } from 'photon-wasm'
+import { flipv, gaussian_blur, grayscale, invert, open_image, PhotonImage, putImageData } from 'photon-wasm'
 import ImageOperation from './ImageOperation'
 
 export default class PhotonImageOperation implements ImageOperation {
@@ -55,6 +55,20 @@ export default class PhotonImageOperation implements ImageOperation {
 
             this.photonImage = open_image(this.wasmResult, this.ctx)
             invert(this.photonImage)
+            putImageData(this.wasmResult, this.ctx, this.photonImage)
+        }
+    }
+
+    flipv(): void {
+        this.resetCanvasImageDimensionReference()
+
+        this.canvasImageDimensionReference.src = this.imageUrl
+        this.canvasImageDimensionReference.onload = () => {
+
+            this.prepareDisplay()
+
+            this.photonImage = open_image(this.wasmResult, this.ctx)
+            flipv(this.photonImage)
             putImageData(this.wasmResult, this.ctx, this.photonImage)
         }
     }
