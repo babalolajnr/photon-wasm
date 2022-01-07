@@ -9,7 +9,8 @@ export default class App {
         blur: () => this.blur(),
         grayscale: () => this.grayscale(),
         invert: () => this.invert(),
-        flip_vertically: () => this.flipv()
+        flip_vertically: () => this.flipv(),
+        flip_horizontally: () => this.fliph()
     }
 
     constructor(
@@ -102,6 +103,22 @@ export default class App {
 
         let t0js = performance.now()
         await this.JimpImageOperation().flipv()
+        let tfjs = performance.now() - t0js
+        console.log('js time: ' + tfjs)
+
+        this.runTimeDisplay.show(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`)
+    }
+
+    private async fliph(): Promise<void> {
+        let t0wasm = performance.now()
+        this.PhotonImageOperation().fliph()
+        let tfwasm = performance.now() - t0wasm
+        console.log('wasm time: ' + tfwasm)
+        this.runTimeDisplay.show(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`)
+
+
+        let t0js = performance.now()
+        await this.JimpImageOperation().fliph()
         let tfjs = performance.now() - t0js
         console.log('js time: ' + tfjs)
 

@@ -3,4 +3,5 @@ export default interface ImageOperation {
     grayscale(): void | Promise<void>
     invert(): void | Promise<void>
     flipv(): void | Promise<void>
+    fliph(): void | Promise<void>
 }

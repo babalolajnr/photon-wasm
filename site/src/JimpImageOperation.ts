@@ -42,6 +42,14 @@ export default class JimpImageOperation implements ImageOperation {
         this.displayResult()
     }
 
+    async fliph() {
+        const image = await Jimp.read(this.imageUrl)
+        image.flip(true, false)
+        this.jsResult.src = await image.getBase64Async(Jimp.MIME_JPEG)
+
+        this.displayResult()
+    }
+
     /**
      * Hide the placeholder and display image
      */
