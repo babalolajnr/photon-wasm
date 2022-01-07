@@ -9,6 +9,7 @@ export default class App {
         blur: () => this.blur(),
         grayscale: () => this.grayscale(),
         invert: () => this.invert(),
+        flip_vertically: () => this.flipv()
     }
 
     constructor(
@@ -91,6 +92,22 @@ export default class App {
         this.runTimeDisplay.show(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`)
     }
 
+    private async flipv(): Promise<void> {
+        let t0wasm = performance.now()
+        this.PhotonImageOperation().flipv()
+        let tfwasm = performance.now() - t0wasm
+        console.log('wasm time: ' + tfwasm)
+        this.runTimeDisplay.show(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`)
+
+
+        let t0js = performance.now()
+        await this.JimpImageOperation().flipv()
+        let tfjs = performance.now() - t0js
+        console.log('js time: ' + tfjs)
+
+        this.runTimeDisplay.show(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`)
+    }
+
     private JimpImageOperation(): JimpImageOperation {
         return new JimpImageOperation(this.srcImageUrl, this.jsResult,
             this.jsResultPlaceholder, this.jsResultTitle)
@@ -109,7 +126,7 @@ export default class App {
         Object.keys(this.operations).forEach(operationName => {
             let li = document.createElement('li')
             li.id = operationName
-            li.innerText = operationName.toUpperCase()
+            li.innerText = operationName.toLowerCase()
 
             this.operationsList.appendChild(li)
 
