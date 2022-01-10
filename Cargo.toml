@@ -37,10 +37,6 @@ wee_alloc = { version = "0.4.2", optional = true }
 time="0.2.1"
 criterion = "0.3"
 
-# [[bench]]
-# name = "photon_benchmark"
-# harness = false
-
 [package.metadata.wasm-pack.profile.release]
 wasm-opt = ["-O3", "--enable-mutable-globals"]
 
