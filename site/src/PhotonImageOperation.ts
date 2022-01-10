@@ -16,6 +16,9 @@ export default class PhotonImageOperation implements ImageOperation {
         this.ctx = this.wasmResult.getContext('2d')
     }
 
+    /**
+     * Blur image
+     */
     blur(): void {
         this.resetCanvasImageDimensionReference()
 
@@ -30,6 +33,9 @@ export default class PhotonImageOperation implements ImageOperation {
         }
     }
 
+    /**
+     * Convert to grayscale
+     */
     grayscale(): void {
 
         this.resetCanvasImageDimensionReference()
@@ -45,6 +51,9 @@ export default class PhotonImageOperation implements ImageOperation {
         }
     }
 
+    /**
+     * Invert image color
+     */
     invert(): void {
         this.resetCanvasImageDimensionReference()
 
@@ -59,6 +68,9 @@ export default class PhotonImageOperation implements ImageOperation {
         }
     }
 
+    /**
+     * Flip Image vertically
+     */
     flipv(): void {
         this.resetCanvasImageDimensionReference()
 
@@ -73,6 +85,9 @@ export default class PhotonImageOperation implements ImageOperation {
         }
     }
 
+    /**
+     * Flip Image horizontally
+     */
     fliph(): void {
         this.resetCanvasImageDimensionReference()
 
