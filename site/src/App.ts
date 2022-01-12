@@ -44,82 +44,82 @@ export default class App {
 
     private async blur(): Promise<void> {
 
-        let t0wasm = performance.now()
+        const t0wasm = performance.now()
         this.PhotonImageOperation().blur()
-        let tfwasm = performance.now() - t0wasm
+        const tfwasm = performance.now() - t0wasm
         console.log('wasm time: ' + tfwasm)
 
         // Display runtime
         this.runTimeDisplay.show(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`)
 
-        let t0js = performance.now()
+        const t0js = performance.now()
 
         await this.JimpImageOperation().blur()
-        let tfjs = performance.now() - t0js
+        const tfjs = performance.now() - t0js
         console.log('js time: ' + tfjs)
 
         this.runTimeDisplay.show(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`)
     }
 
     private async grayscale(): Promise<void> {
-        let t0wasm = performance.now()
+        const t0wasm = performance.now()
         this.PhotonImageOperation().grayscale()
-        let tfwasm = performance.now() - t0wasm
+        const tfwasm = performance.now() - t0wasm
         console.log('wasm time: ' + tfwasm)
         this.runTimeDisplay.show(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`)
 
 
-        let t0js = performance.now()
+        const t0js = performance.now()
         await this.JimpImageOperation().grayscale()
-        let tfjs = performance.now() - t0js
+        const tfjs = performance.now() - t0js
         console.log('js time: ' + tfjs)
 
         this.runTimeDisplay.show(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`)
     }
 
     private async invert(): Promise<void> {
-        let t0wasm = performance.now()
+        const t0wasm = performance.now()
         this.PhotonImageOperation().invert()
-        let tfwasm = performance.now() - t0wasm
+        const tfwasm = performance.now() - t0wasm
         console.log('wasm time: ' + tfwasm)
         this.runTimeDisplay.show(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`)
 
 
-        let t0js = performance.now()
+        const t0js = performance.now()
         await this.JimpImageOperation().invert()
-        let tfjs = performance.now() - t0js
+        const tfjs = performance.now() - t0js
         console.log('js time: ' + tfjs)
 
         this.runTimeDisplay.show(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`)
     }
 
     private async flipv(): Promise<void> {
-        let t0wasm = performance.now()
+        const t0wasm = performance.now()
         this.PhotonImageOperation().flipv()
-        let tfwasm = performance.now() - t0wasm
+        const tfwasm = performance.now() - t0wasm
         console.log('wasm time: ' + tfwasm)
         this.runTimeDisplay.show(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`)
 
 
-        let t0js = performance.now()
+        const t0js = performance.now()
         await this.JimpImageOperation().flipv()
-        let tfjs = performance.now() - t0js
+        const tfjs = performance.now() - t0js
         console.log('js time: ' + tfjs)
 
         this.runTimeDisplay.show(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`)
     }
 
     private async fliph(): Promise<void> {
-        let t0wasm = performance.now()
+        const t0wasm = performance.now()
         this.PhotonImageOperation().fliph()
-        let tfwasm = performance.now() - t0wasm
+        const tfwasm = performance.now() - t0wasm
         console.log('wasm time: ' + tfwasm)
         this.runTimeDisplay.show(`Wasm run time: ${(tfwasm / 1000).toFixed(5)} s`)
 
 
-        let t0js = performance.now()
+        const t0js = performance.now()
         await this.JimpImageOperation().fliph()
-        let tfjs = performance.now() - t0js
+        const tfjs = performance.now() - t0js
         console.log('js time: ' + tfjs)
 
         this.runTimeDisplay.show(`Javascript run time: ${(tfjs / 1000).toFixed(5)} s`)
@@ -141,7 +141,7 @@ export default class App {
      */
     private buildOperationsList() {
         Object.keys(this.operations).forEach(operationName => {
-            let li = document.createElement('li')
+            const li = document.createElement('li')
             li.id = operationName
             li.innerText = operationName.toLowerCase()
             li.classList.add('hover:text-blue-600')
