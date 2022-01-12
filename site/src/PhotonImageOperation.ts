@@ -107,10 +107,10 @@ export default class PhotonImageOperation implements ImageOperation {
     */
     private scaleToFill(): void {
         // get the scale
-        let scale = Math.max(this.wasmResult.width / this.srcImage.width, this.wasmResult.height / this.srcImage.height);
+        const scale = Math.max(this.wasmResult.width / this.srcImage.width, this.wasmResult.height / this.srcImage.height);
         // get the top left position of the image
-        let x = (this.wasmResult.width / 2) - (this.srcImage.width / 2) * scale;
-        let y = (this.wasmResult.height / 2) - (this.srcImage.height / 2) * scale;
+        const x = (this.wasmResult.width / 2) - (this.srcImage.width / 2) * scale;
+        const y = (this.wasmResult.height / 2) - (this.srcImage.height / 2) * scale;
         this.ctx.drawImage(this.srcImage, x, y, this.srcImage.width * scale, this.srcImage.height * scale);
     }
 
