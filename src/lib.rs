@@ -397,7 +397,6 @@ pub mod helpers;
 mod iter;
 pub mod monochrome;
 pub mod multiple;
-pub mod native;
 pub mod noise;
 mod tests;
 pub mod text;
